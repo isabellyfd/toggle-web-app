@@ -4,6 +4,8 @@
   "description": "Server Application that provides an interface to the cummunication within the framework and the data base",
   "main": "index.js",
   "scripts": {
+    "start": "node index",
+    "start-dev": "nodemon index",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
