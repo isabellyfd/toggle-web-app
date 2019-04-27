@@ -7,8 +7,12 @@ router.get('/v1/toggle-service/ping', (req, res) => {
     res.json(service.ping());
 });
 
-router.get('/v1/toggle-service/create', (req, res) => {
-    res.json(service.create());
+router.post('/v1/toggle-service/create/', (req, res) => {
+    if (req.body.name === undefined){
+        res.status(400).send('Bad request without name attribute on body');
+        return;
+    }
+    res.json(service.create(req.body.name));
 });
 
 module.exports = router;
