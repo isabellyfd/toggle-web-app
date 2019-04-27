@@ -1,0 +1,32 @@
+{
+  "name": "toggle-web-app",
+  "version": "1.0.0",
+  "description": "Server Application that provides an interface to the cummunication within the framework and the data base",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isabellyfd/toggle-web-app.git"
+  },
+  "keywords": [
+    "toggle"
+  ],
+  "author": "Isabelly Damascena",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/isabellyfd/toggle-web-app/issues"
+  },
+  "homepage": "https://github.com/isabellyfd/toggle-web-app#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "nodemon": "^1.18.11"
+  }
+}
