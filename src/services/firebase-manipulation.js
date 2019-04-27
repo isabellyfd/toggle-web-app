@@ -1,4 +1,5 @@
 const firebase = require('firebase');
+const uuidv1 = require('uuid/v1');
 
 const config = {
     apiKey: "AIzaSyC1j_HZ0NNceyP4ixqHdbkra4vHhqtIArc",
@@ -10,12 +11,17 @@ const config = {
 };
 
 firebase.initializeApp(config);
+const auth = firebase.auth();
+const db = firebase.firestore();
 
 module.exports = {
     createUserWith(email, password) {
-        return firebase.auth().createUserWithEmailAndPassword(email, password); 
+        return auth.createUserWithEmailAndPassword(email, password); 
     },
     signInWith(email, password) {
-        return firebase.auth().signInWithEmailAndPassword(email, password);
+        return auth.signInWithEmailAndPassword(email, password);
+    }, 
+    createApplication(userId, application) {
+        return db.collection('applications').doc(userId).collection('personal-apps').doc(uuidv1()).set(application);
     }
 }

@@ -7,12 +7,20 @@ router.get('/v1/toggle-service/ping', (req, res) => {
     res.json(service.ping());
 });
 
-router.post('/v1/toggle-service/create/', (req, res) => {
+router.post('/v1/toggle-service/create-application/', (req, res) => {
     if (req.body.name === undefined){
         res.status(400).send('Request without name attribute on body');
         return;
     }
-    res.json(service.createApplication(req.body.name));
+    service.createApplicationForUserwithName(req.body.userId, req.body.name)
+        .then(() => {
+            console.log("Deu Bom!")
+            res.sendStatus(200);
+        })
+        .catch(error => {
+            console.log(error);
+            res.sendStatus(500);
+        });
 });
 
 router.post('/v1/toggle-service/create-user/', (req, res) => {

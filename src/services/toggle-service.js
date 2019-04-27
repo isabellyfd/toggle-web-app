@@ -5,8 +5,12 @@ module.exports = {
     ping() {
         return "PONG! You've found an API!";
     },
-    createApplication(name) {
-        return new Application(name);
+    createApplicationForUserwithName(userId, name) {
+        const application = {
+            name,
+            toggles: []
+        };
+        return db.createApplication(userId, application);
     },
     createNewUser(email, password) {
         return db.createUserWith(email, password);
