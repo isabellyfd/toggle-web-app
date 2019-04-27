@@ -1,9 +1,9 @@
-'use strict';
 const uuidv1 = require('uuid/v1');
 
-module.exports.Application = class Application {
-    constructor(){
-        this.identifier = uuidv1();
-        this.toggles = [];
-    }
+function Application(name) {
+    this.identifier = uuidv1();
+    this.name = name;
+    this.toggles = [];
 }
+
+module.exports = Application;
