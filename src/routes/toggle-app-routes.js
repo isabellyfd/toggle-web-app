@@ -9,16 +9,25 @@ router.get('/v1/toggle-service/ping', (req, res) => {
 
 router.post('/v1/toggle-service/create/', (req, res) => {
     if (req.body.name === undefined){
-        res.status(400).send('Bad request without name attribute on body');
+        res.status(400).send('Request without name attribute on body');
         return;
     }
     res.json(service.createApplication(req.body.name));
 });
 
 router.post('/v1/toggle-service/create-user/', (req, res) => {
-    service.createUser(req.body.email, req.body.password)
+    if(req.body.email === undefined){
+        res.status(400).send('Request without email attribute on body');
+        return;
+    }
+
+    if(req.body.password === undefined){
+        res.status(400).send('Request without password attribute on body');
+        return;
+    }
+
+    service.createNewUser(req.body.email, req.body.password)
         .then((response) => {
-            console.log(response);
             res.json(response);
         })
         .catch((error => {
