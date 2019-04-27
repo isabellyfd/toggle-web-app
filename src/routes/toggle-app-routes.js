@@ -27,12 +27,23 @@ router.post('/v1/toggle-service/create-user/', (req, res) => {
     }
 
     service.createNewUser(req.body.email, req.body.password)
-        .then((response) => {
+        .then(response => {
             res.json(response);
         })
-        .catch((error => {
+        .catch(error => {
             res.status(500).send(error.code);
-        }));
+        });
+});
+
+
+router.post('/v1/toggle-service/signin/', (req, res) => {
+    service.signInWith(req.body.email, req.body.password)
+        .then(response => {
+            res.json(response);
+        })
+        .catch(error =>{
+            res.status(500).send(error.code);
+        });
 });
 
 module.exports = router;
