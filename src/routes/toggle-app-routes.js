@@ -12,7 +12,18 @@ router.post('/v1/toggle-service/create/', (req, res) => {
         res.status(400).send('Bad request without name attribute on body');
         return;
     }
-    res.json(service.create(req.body.name));
+    res.json(service.createApplication(req.body.name));
+});
+
+router.post('/v1/toggle-service/create-user/', (req, res) => {
+    service.createUser(req.body.email, req.body.password)
+        .then((response) => {
+            console.log(response);
+            res.json(response);
+        })
+        .catch((error => {
+            res.status(500).send(error.code);
+        }));
 });
 
 module.exports = router;
