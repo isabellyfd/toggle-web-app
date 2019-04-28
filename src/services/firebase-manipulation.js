@@ -26,5 +26,9 @@ module.exports = {
     },
     getAllApplicationByUser(userId) {
         return db.collection('applications').doc(userId).collection('personal-apps').get();
+    },
+    addToggleForApplication(userId, applicationId, toggle){
+        return db.collection('applications').doc(userId)
+            .collection('personal-apps').doc(applicationId).set({toggles: [toggle]}, { merge: true })
     }
 }

@@ -44,6 +44,30 @@ router.post('/v1/toggle-service/create-user/', (req, res) => {
         });
 });
 
+router.post('/v1/toggle-service/my-apps/addToggle', (req, res) => {
+    const userId = req.body.userId;
+    const applicationId = req.body.applicationId;
+    const toggleName = req.body.toggleName;
+    const toggleValue = req.body.toggleValue;
+
+    if (userId === undefined || applicationId === undefined || toggleName === undefined || toggleValue === undefined) {
+        winston.info(`Bad request with parameters userId = ${userId} applicationId = ${applicationId} toggleName = ${toggleName} toggleValue = ${toggleValue}`);
+        res.sendStatus(400);
+        return;
+    }
+
+    service.addToggle(userId, applicationId, toggleName, toggleValue)
+        .then(response => {
+            winston.info(`created toggle ${toggleName} = ${toggleValue} successfully for application ${applicationId}`);
+            res.status(200).send(response);
+        })
+        .catch(_ => {
+            winston.info(`failed to create toggle ${toggleName} = ${toggleValue} for application ${applicationId}`);
+            res.sendStatus(500)}
+        );
+
+});
+
 router.get('/v1/toggle-service/my-apps/:userId', (req, res) => {
     const userId = req.params.userId;
     if (userId === undefined) {
