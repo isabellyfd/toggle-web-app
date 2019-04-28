@@ -3,10 +3,6 @@ const service =  require('../services/toggle-service');
 
 const router = Router();
 
-router.get('/v1/toggle-service/ping', (req, res) => {
-    res.json(service.ping());
-});
-
 router.post('/v1/toggle-service/create-application/', (req, res) => {
     if (req.body.name === undefined){
         res.status(400).send('Request without name attribute on body');
@@ -14,11 +10,9 @@ router.post('/v1/toggle-service/create-application/', (req, res) => {
     }
     service.createApplicationForUserwithName(req.body.userId, req.body.name)
         .then(() => {
-            console.log("Deu Bom!")
             res.sendStatus(200);
         })
         .catch(error => {
-            console.log(error);
             res.sendStatus(500);
         });
 });
@@ -43,6 +37,28 @@ router.post('/v1/toggle-service/create-user/', (req, res) => {
         });
 });
 
+router.get('/v1/toggle-service/my-apps/:userId', (req, res) => {
+    const userId = req.params.userId;
+    if (userId === undefined) {
+        res.sendStatus(500);
+        return;
+    }
+    
+    service.getApplicationsByUser(userId)
+        .then(querySnapshot => {
+            const personalApplications = querySnapshot.docs.map(doc => {
+                const application = {
+                    id: doc.id, 
+                    name: doc.data().name, 
+                    toggles: doc.data().toggles
+                };
+                return application;
+            });
+            res.status(200).send(personalApplications);
+        })
+        .catch(_ => res.sendStatus(500));
+    
+});
 
 router.post('/v1/toggle-service/signin/', (req, res) => {
     service.signInWith(req.body.email, req.body.password)
@@ -54,4 +70,7 @@ router.post('/v1/toggle-service/signin/', (req, res) => {
         });
 });
 
+router.get('/v1/toggle-service/ping', (req, res) => {
+    res.json(service.ping());
+});
 module.exports = router;

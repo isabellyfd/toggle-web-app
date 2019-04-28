@@ -17,8 +17,8 @@ module.exports = {
     },
     signInWith(email, password) {
         return db.signInWith(email, password);
-    }, 
-    signOut() {
-        db.signOut();
+    },
+    getApplicationsByUser(userId) {
+        return db.getAllApplicationByUser(userId);
     }
 };

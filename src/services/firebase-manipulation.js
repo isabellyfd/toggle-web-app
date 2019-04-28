@@ -23,5 +23,8 @@ module.exports = {
     }, 
     createApplication(userId, application) {
         return db.collection('applications').doc(userId).collection('personal-apps').doc(uuidv1()).set(application);
+    },
+    getAllApplicationByUser(userId) {
+        return db.collection('applications').doc(userId).collection('personal-apps').get();
     }
 }
