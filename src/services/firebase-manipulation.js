@@ -29,5 +29,8 @@ module.exports = {
     },
     addToggleForApplication(applicationId, toggle){
         return db.collection(applicationId).doc().set(toggle);
+    },
+    updateToggleForApplication(applicationId, toggleId, toggle) {
+        return db.collection(applicationId).doc(toggleId).update(toggle);
     }
 }

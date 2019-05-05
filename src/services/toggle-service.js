@@ -20,11 +20,18 @@ module.exports = {
     getApplicationsByUser(userId) {
         return db.getAllApplicationByUser(userId);
     },
-    addToggle(applicationId, toggleName, toggleVamue){
+    addToggle(applicationId, toggleName, toggleValue){
         const toggle = {
             name: toggleName,
-            value: toggleVamue
+            value: toggleValue
         };
         return db.addToggleForApplication(applicationId, toggle);
+    },
+    updateToggle(applicationId, toggleId, toggleName, toggleValue) {
+        const toggle = {
+            name: toggleName,
+            value: toggleValue
+        }
+        return db.updateToggleForApplication(applicationId, toggleId, toggle);
     }
 };
