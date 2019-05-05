@@ -7,8 +7,7 @@ module.exports = {
     },
     createApplicationForUserwithName(userId, name) {
         const application = {
-            name,
-            toggles: []
+            name
         };
         return db.createApplication(userId, application);
     },
@@ -21,11 +20,11 @@ module.exports = {
     getApplicationsByUser(userId) {
         return db.getAllApplicationByUser(userId);
     },
-    addToggle(userId, applicationId, toggleName, toggleVamue){
+    addToggle(applicationId, toggleName, toggleVamue){
         const toggle = {
             name: toggleName,
             value: toggleVamue
         };
-        return db.addToggleForApplication(userId, applicationId, toggle);
+        return db.addToggleForApplication(applicationId, toggle);
     }
 };

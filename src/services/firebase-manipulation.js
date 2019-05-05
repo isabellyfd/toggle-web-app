@@ -22,13 +22,12 @@ module.exports = {
         return auth.signInWithEmailAndPassword(email, password);
     }, 
     createApplication(userId, application) {
-        return db.collection('applications').doc(userId).collection('personal-apps').doc(uuidv1()).set(application);
+        return db.collection(userId).doc().set(application);
     },
     getAllApplicationByUser(userId) {
-        return db.collection('applications').doc(userId).collection('personal-apps').get();
+        return db.collection(userId).get();
     },
-    addToggleForApplication(userId, applicationId, toggle){
-        return db.collection('applications').doc(userId)
-            .collection('personal-apps').doc(applicationId).set({toggles: [toggle]}, { merge: true })
+    addToggleForApplication(applicationId, toggle){
+        return db.collection(applicationId).doc().set(toggle);
     }
 }

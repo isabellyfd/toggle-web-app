@@ -12,14 +12,15 @@ router.post('/v1/toggle-service/create-application/', (req, res) => {
         res.status(400).send('Request without the required attributes on body');
         return;
     }
+
     service.createApplicationForUserwithName(userId, name)
         .then(() => {
             winston.info(`application with name = ${name} created for user with id = ${userId}`);
-            res.sendStatus(200);
+            res.status(200).send('application created successfully');
         })
         .catch(error => {
             winston.info(`application creation failed name = ${name} for user with id = ${userId}`);
-            res.sendStatus(500);
+            res.status(500).send(error);
         });
 });
 
@@ -45,25 +46,24 @@ router.post('/v1/toggle-service/create-user/', (req, res) => {
 });
 
 router.post('/v1/toggle-service/my-apps/addToggle', (req, res) => {
-    const userId = req.body.userId;
     const applicationId = req.body.applicationId;
     const toggleName = req.body.toggleName;
     const toggleValue = req.body.toggleValue;
 
-    if (userId === undefined || applicationId === undefined || toggleName === undefined || toggleValue === undefined) {
-        winston.info(`Bad request with parameters userId = ${userId} applicationId = ${applicationId} toggleName = ${toggleName} toggleValue = ${toggleValue}`);
-        res.sendStatus(400);
+    if (applicationId === undefined || toggleName === undefined || toggleValue === undefined) {
+        winston.info(`Bad request with parameters applicationId = ${applicationId} toggleName = ${toggleName} toggleValue = ${toggleValue}`);
+        res.status(400).send('Request without the required attributes on body');
         return;
     }
 
-    service.addToggle(userId, applicationId, toggleName, toggleValue)
+    service.addToggle(applicationId, toggleName, toggleValue)
         .then(response => {
             winston.info(`created toggle ${toggleName} = ${toggleValue} successfully for application ${applicationId}`);
             res.status(200).send(response);
         })
-        .catch(_ => {
+        .catch(error => {
             winston.info(`failed to create toggle ${toggleName} = ${toggleValue} for application ${applicationId}`);
-            res.sendStatus(500)}
+            res.json(error)}
         );
 
 });
@@ -81,8 +81,7 @@ router.get('/v1/toggle-service/my-apps/:userId', (req, res) => {
             const personalApplications = querySnapshot.docs.map(doc => {
                 const application = {
                     id: doc.id, 
-                    name: doc.data().name, 
-                    toggles: doc.data().toggles
+                    name: doc.data().name
                 };
                 return application;
             });
