@@ -11,13 +11,6 @@ module.exports = {
         };
         return db.createApplication(userId, application);
     },
-    createNewUser(email, password) {
-        return db.createUserWith(email, password);
-    },
-    signInWith(email, password) {
-        winston.info(db.signInWith);
-        return db.signInWith(email, password);
-    },
     getApplicationsByUser(userId) {
         return db.getAllApplicationByUser(userId);
     },

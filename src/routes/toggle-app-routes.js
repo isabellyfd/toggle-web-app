@@ -24,27 +24,6 @@ router.post('/v1/toggle-service/create-application/', (req, res) => {
         });
 });
 
-router.post('/v1/toggle-service/create-user/', (req, res) => {
-    const email = req.body.email;
-    const password = req.body.password;
-
-    if(email === undefined || password === undefined){
-        winston.info(`Bad request with body parameters email = ${email} and password = ${password}`);
-        res.status(400).send('Request without the required attributes on body');
-        return;
-    }
-
-    service.createNewUser(req.body.email, req.body.password)
-        .then(response => {
-            winston.info(`created user successfully with email = ${email}`);
-            res.json(response);
-        })
-        .catch(error => {
-            winston.info(`failed to create user with email = ${email}`);
-            res.status(500).send(error.code);
-        });
-});
-
 
 router.get('/v1/toggle-service/my-apps/:userId', (req, res) => {
     const userId = req.params.userId;
@@ -139,21 +118,7 @@ router.post('/v1/toggle-service/toggle/update', (req, res) => {
         );
 
 });
-router.post('/v1/toggle-service/signin/', (req, res) => {
 
-    const email = req.body.email;
-    const password = req.body.password;
-    winston.info(`email = ${email}, password = ${password}`)
-
-    service.signInWith(email, password)
-        .catch(error => {
-            res.status(200).json(error);
-        })
-    // service.signInWith(req.body.email, req.body.password)
-    //     .catch(error =>{
-    //         res.send(error).status(200);
-    //     });
-});
 
 router.get('/v1/toggle-service/ping', (req, res) => {
     res.json(service.ping());

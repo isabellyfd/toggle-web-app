@@ -11,17 +11,9 @@ const config = {
 };
 
 firebase.initializeApp(config);
-const auth = firebase.auth();
 const db = firebase.firestore();
 
-module.exports = {
-    createUserWith(email, password) {
-        return auth.createUserWithEmailAndPassword(email, password); 
-    },
-    signInWith(email, password) {
-        winston.info("we got here")
-        return auth.signInWithEmailAndPassword(email, password);
-    }, 
+module.exports = { 
     createApplication(userId, application) {
         return db.collection(userId).doc().set(application);
     },
