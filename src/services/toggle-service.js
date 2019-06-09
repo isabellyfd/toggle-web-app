@@ -1,5 +1,5 @@
-const Application = require('../models/application');
 const db = require('./firebase-manipulation');
+const winston = require('winston');
 
 module.exports = {
     ping() {
@@ -15,10 +15,14 @@ module.exports = {
         return db.createUserWith(email, password);
     },
     signInWith(email, password) {
+        winston.info(db.signInWith);
         return db.signInWith(email, password);
     },
     getApplicationsByUser(userId) {
         return db.getAllApplicationByUser(userId);
+    },
+    getTogglesForApplication(applicationId) {
+        return db.getAllTogglesForApplication(applicationId);
     },
     addToggle(applicationId, toggleName, toggleValue){
         const toggle = {

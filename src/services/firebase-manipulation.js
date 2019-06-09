@@ -1,6 +1,6 @@
 const firebase = require('firebase');
 const uuidv1 = require('uuid/v1');
-
+const winston = require('winston');
 const config = {
     apiKey: "AIzaSyC1j_HZ0NNceyP4ixqHdbkra4vHhqtIArc",
     authDomain: "toggle-app-ed92c.firebaseapp.com",
@@ -19,6 +19,7 @@ module.exports = {
         return auth.createUserWithEmailAndPassword(email, password); 
     },
     signInWith(email, password) {
+        winston.info("we got here")
         return auth.signInWithEmailAndPassword(email, password);
     }, 
     createApplication(userId, application) {
@@ -26,6 +27,9 @@ module.exports = {
     },
     getAllApplicationByUser(userId) {
         return db.collection(userId).get();
+    },
+    getAllTogglesForApplication(applicationId){
+        return db.collection(applicationId).get();
     },
     addToggleForApplication(applicationId, toggle){
         return db.collection(applicationId).doc().set(toggle);

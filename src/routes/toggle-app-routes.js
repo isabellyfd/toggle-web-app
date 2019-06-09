@@ -92,6 +92,30 @@ router.post('/v1/toggle-service/toggle/add', (req, res) => {
 
 });
 
+router.get('/v1/toggle-service/toggles/:applicationId', (req, res) => {
+    const applicationId = req.params.applicationId;
+    if (applicationId === undefined) {
+        winston.info(`Bad request with parameters applicationId = ${applicationId}`);
+        res.sendStatus(400);
+        return;
+    }
+    
+    service.getTogglesForApplication(applicationId)
+        .then(querySnapshot => {
+            const personalApplications = querySnapshot.docs.map(doc => {
+                const toggle = {
+                    id: doc.id, 
+                    name: doc.data().name, 
+                    value: doc.data().value
+                };
+                return toggle;
+            });
+            res.status(200).send(personalApplications);
+        })
+        .catch(_ => res.sendStatus(500));
+    
+});
+
 router.post('/v1/toggle-service/toggle/update', (req, res) => {
     const applicationId = req.body.applicationId;
     const toggleId = req.body.toggleId;
@@ -116,15 +140,19 @@ router.post('/v1/toggle-service/toggle/update', (req, res) => {
 
 });
 router.post('/v1/toggle-service/signin/', (req, res) => {
-    service.signInWith(req.body.email, req.body.password)
-        .then(response => {
-            winston.info(`signin sucessful`);
-            res.json(response);
+
+    const email = req.body.email;
+    const password = req.body.password;
+    winston.info(`email = ${email}, password = ${password}`)
+
+    service.signInWith(email, password)
+        .catch(error => {
+            res.status(200).json(error);
         })
-        .catch(error =>{
-            winston.info(`could not signin`);
-            res.status(500).send(error.code);
-        });
+    // service.signInWith(req.body.email, req.body.password)
+    //     .catch(error =>{
+    //         res.send(error).status(200);
+    //     });
 });
 
 router.get('/v1/toggle-service/ping', (req, res) => {
